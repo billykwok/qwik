@@ -3,6 +3,7 @@ import { dispatchPrefetchEvent } from './client-navigate';
 import { CLIENT_DATA_CACHE } from './constants';
 import type { ClientPageData, RouteActionValue } from './types';
 import { _deserializeData } from '@builder.io/qwik';
+import { isBrowser } from '@builder.io/qwik/build';
 
 export const loadClientData = async (
   url: URL,
@@ -18,9 +19,9 @@ export const loadClientData = async (
     qData = CLIENT_DATA_CACHE.get(clientDataPath);
   }
 
-  dispatchPrefetchEvent({
-    links: [pagePathname],
-  });
+  if (isBrowser) {
+    dispatchPrefetchEvent(pagePathname);
+  }
 
   if (!qData) {
     const options = getFetchOptions(action);

@@ -67,7 +67,34 @@ export interface RouteLocation {
 /**
  * @public
  */
-export type RouteNavigate = QRL<(path?: string, forceReload?: boolean) => Promise<void>>;
+export type NavigationType = 'initial' | 'form' | 'link' | 'popstate';
+
+/**
+ * @internal
+ */
+export type RouteStateInternal = {
+  type: NavigationType;
+  dest: URL;
+};
+
+/**
+ * @alpha
+ */
+export type RestoreScroll = (
+  navigationType: NavigationType,
+  fromUrl: URL,
+  toUrl: Promise<URL>
+) => void | Promise<void>;
+
+/**
+ * @public
+ */
+export type RouteNavigate = QRL<
+  (
+    path?: string,
+    options?: { forceReload?: boolean; type?: NavigationType } | boolean
+  ) => Promise<void>
+>;
 
 export type RouteAction = Signal<RouteActionValue>;
 
